@@ -537,11 +537,11 @@ end -- get_weaponskill()
 function use_weaponskill(ws_name) 
 	if (active) then
 		--if (windower.ffxi.get_mob_by_target('t').vitals.hpp < settings.max_hp) then return end
-		debug_message("Self WS? ".." targets = "..T(res.weapon_skills:with('name', ws_name).targets)[1])
-		if (res.weapon_skills:with('name', ws_name).targets and T(res.weapon_skills:with('name', ws_name).targets)[1] == "Self") then
-			windower.send_command('input /ws "'..ws_name..'" <me>')
+		debug_message("Self WS? ".." targets = "..T(res.weapon_skills:with('en', ws_name).targets)[1])
+		if (res.weapon_skills:with('en', ws_name).targets and T(res.weapon_skills:with('en', ws_name).targets)[1] == "Self") then
+			windower.send_command('input /ws "'..windower.to_shift_jis(res.weapon_skills:with('en', ws_name).name)..'" <me>')
 		else
-			windower.send_command('input /ws "'..ws_name..'" <t>')
+			windower.send_command('input /ws "'..windower.to_shift_jis(res.weapon_skills:with('en', ws_name).name)..'" <t>')
 		end
 	end
 end
@@ -577,11 +577,11 @@ function open_skillchain()
 	local job = player.main_job:lower()
 	if (settings.sc_openers[job] ~= nil and settings.sc_openers[job][weapon_name] ~= nil) then
 		local ws_name = settings.sc_openers[job][weapon_name]
-		local ws_range = res.weapon_skills:with('name', ws_name).range*2
+		local ws_range = res.weapon_skills:with('en', ws_name).range*2
 		local dist = mob.distance:sqrt()
 
 		-- If this is a self-targeted WS distance doesn't matter
-		if (T(res.weapon_skills:with('name', ws_name).targets)[1] == 'Self') then
+		if (T(res.weapon_skills:with('en', ws_name).targets)[1] == 'Self') then
 			dist = 1
 		end
 
@@ -816,7 +816,7 @@ windower.register_event('addon command', function(...)
 		if (ws_name == "Chant Du Cygne") then
 			ws_name = "Chant du Cygne"
 		end
-		if (res.weapon_skills:with('name', ws_name) == nil) then
+		if (res.weapon_skills:with('en', ws_name) == nil) then
 			message("No weaponskill with name: "..ws_name.." found. SC opener not added.")
 			return
 		end
@@ -838,7 +838,7 @@ windower.register_event('addon command', function(...)
 		if (ws_name == "Chant Du Cygne") then
 			ws_name = "Chant du Cygne"
 		end
-		if (res.weapon_skills:with('name', ws_name) == nil) then
+		if (res.weapon_skills:with('en', ws_name) == nil) then
 			message("No weaponskill with name: "..ws_name.." found. WS filter not added/removed.")
 			return
 		end
